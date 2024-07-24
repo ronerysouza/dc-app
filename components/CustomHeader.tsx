@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
+import BottomSheet from "./BottomSheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 const SearchBar = () => (
   <View style={styles.searchContainer}>
@@ -32,13 +34,19 @@ const SearchBar = () => (
 );
 
 const CustomHeader = () => {
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const openModal = () => {
+    bottomSheetRef.current?.present();
+  };
   return (
     <SafeAreaView style={styles.safeArea}>
+      <BottomSheet ref={bottomSheetRef} />
       <View style={styles.container}>
-        <TouchableOpacity style={styles.addressIcon}>
+        <TouchableOpacity style={styles.addressIcon} onPress={openModal}>
           <Ionicons name="bicycle-outline" size={28} color={Colors.primary} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.addressBox}>
+        <TouchableOpacity style={styles.addressBox} onPress={openModal}>
           <Text style={styles.titleAddress}>Endereço para entrega:</Text>
           <View style={styles.lineAddress}>
             <Text style={styles.textAddress}>Av. Castro Alves, 182</Text>
