@@ -12,3 +12,9 @@ export type UserProfile = {
   answer: string;
   userType: string;
 };
+
+export type UserStorage = {
+  userName: string;
+  id: string;
+  userType: string;
+};

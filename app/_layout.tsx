@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/context/authAuth";
+import { AuthProvider, useAuth } from "@/context/authContext";
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 

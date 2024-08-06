@@ -1,7 +1,8 @@
 import CustomHeader from "@/components/CustomHeader";
-import { AuthProvider } from "@/context/authAuth";
+import { AuthProvider, useAuth } from "@/context/authContext";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
+import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export const unstable_settings = {
@@ -9,7 +10,13 @@ export const unstable_settings = {
   initialRouteName: "home",
 };
 
-export default function RootLayoutNav() {
+export default function Layout() {
+  const { authState } = useAuth();
+
+  if (!authState?.authenticated) {
+    return <Redirect href="/" />;
+  }
+
   return (
     <AuthProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
