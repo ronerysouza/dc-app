@@ -12,13 +12,13 @@ import { Link } from "expo-router";
 import { useAuth } from "@/context/authContext";
 import { globalStyles } from "@/assets/styles/styles";
 
-const Login = () => {
+const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { onLogin } = useAuth();
 
   const sendForm = async () => {
-    const result = await onLogin!(email, password);
+    // const result = await onLogin!(email, password);
   };
 
   return (
@@ -29,7 +29,7 @@ const Login = () => {
       />
 
       <View style={globalStyles.boxLogin}>
-        <Text style={globalStyles.titleLogin}>Identifique-se</Text>
+        <Text style={globalStyles.titleLogin}>Cadastre-se</Text>
 
         <View style={globalStyles.boxLabel}>
           <Text style={globalStyles.textLabel}>E-mail:</Text>
@@ -58,25 +58,13 @@ const Login = () => {
           style={globalStyles.buttonSubmit}
           onPress={() => sendForm()}
         >
-          <Text style={globalStyles.textButtonSubmit}>entrar</Text>
+          <Text style={globalStyles.textButtonSubmit}>continuar</Text>
         </TouchableOpacity>
 
-        <Link replace href={"/forgotPassword"} asChild>
+        <Text style={globalStyles.titleNotRegistered}>Já é cadastrado?</Text>
+        <Link replace href={"/"} asChild>
           <TouchableOpacity style={globalStyles.linkForgotPassword}>
-            <Text style={globalStyles.textLinkForgotPassword}>
-              Esqueceu sua senha?
-            </Text>
-          </TouchableOpacity>
-        </Link>
-
-        <Text style={globalStyles.titleNotRegistered}>
-          Ainda não é cadastrado?
-        </Text>
-        <Link replace href={"/register"} asChild>
-          <TouchableOpacity style={globalStyles.linkForgotPassword}>
-            <Text style={globalStyles.textLinkRegister}>
-              Registre-se agora!
-            </Text>
+            <Text style={globalStyles.textLinkRegister}>Faça login</Text>
           </TouchableOpacity>
         </Link>
       </View>
@@ -86,4 +74,4 @@ const Login = () => {
 
 const styles = StyleSheet.create({});
 
-export default Login;
+export default Register;
