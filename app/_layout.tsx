@@ -1,12 +1,8 @@
 import Colors from "@/constants/Colors";
 import { AuthProvider, useAuth } from "@/context/authContext";
 import { Stack } from "expo-router";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
-export const unstable_settings = {
-  initialRouteName: "index",
-};
 
 export default function RootLayoutNav() {
   return (

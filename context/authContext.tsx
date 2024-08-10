@@ -1,17 +1,11 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
-import {
-  useNavigation,
-  usePathname,
-  useRootNavigationState,
-  useRouter,
-} from "expo-router";
+import { useRouter } from "expo-router";
 
 interface AuthProps {
   authState?: { token: string | null; authenticated: boolean | null };
   onLogin?: (email: string, password: string) => Promise<any>;
-  onLogout?: () => Promise<any>;
 }
 
 const TOKEN_KEY = "my-jwt";
@@ -23,7 +17,6 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: any) => {
-  const pathUrl = usePathname();
   const router = useRouter();
   const [authState, setAuthState] = useState<{
     token: string | null;
@@ -41,7 +34,7 @@ export const AuthProvider = ({ children }: any) => {
           token: token,
           authenticated: true,
         });
-        if (pathUrl === "/") router.replace("/home");
+        router.replace("/home");
       }
     };
     loadToken();
@@ -72,20 +65,8 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
-  const logout = async () => {
-    await SecureStore.deleteItemAsync(TOKEN_KEY);
-    axios.defaults.headers.common["Authorization"] = "";
-
-    setAuthState({
-      token: null,
-      authenticated: false,
-    });
-    router.replace("/");
-  };
-
   const value = {
     onLogin: login,
-    onLogout: logout,
     authState,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

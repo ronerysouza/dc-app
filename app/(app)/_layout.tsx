@@ -1,25 +1,14 @@
 import CustomHeader from "@/components/CustomHeader";
 import Colors from "@/constants/Colors";
-import { AuthProvider, useAuth } from "@/context/authContext";
+import { AuthLoggedProvider } from "@/context/authContextLogged";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Redirect, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { SafeAreaView, StyleSheet } from "react-native";
-// import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-// export const unstable_settings = {
-//   initialRouteName: "home",
-// };
-
 export default function Layout() {
-  const { authState } = useAuth();
-
-  if (!authState?.authenticated) {
-    return <Redirect href="/" />;
-  }
-
   return (
-    <AuthProvider>
+    <AuthLoggedProvider>
       <SafeAreaView style={styles.safeArea}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <BottomSheetModalProvider>
@@ -34,7 +23,7 @@ export default function Layout() {
           </BottomSheetModalProvider>
         </GestureHandlerRootView>
       </SafeAreaView>
-    </AuthProvider>
+    </AuthLoggedProvider>
   );
 }
 

@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import BottomSheet from "./BottomSheet";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { useAuth } from "@/context/authContext";
+import { useLoggedAuth } from "@/context/authContextLogged";
 
 const SearchBar = () => (
   <View style={styles.searchContainer}>
@@ -36,7 +36,7 @@ const SearchBar = () => (
 
 const CustomHeader = () => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const { onLogout } = useAuth();
+  const { onLogout } = useLoggedAuth();
 
   const openModal = () => {
     bottomSheetRef.current?.present();
