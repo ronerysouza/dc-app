@@ -1,7 +1,12 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
-import { useNavigation, useRouter } from "expo-router";
+import {
+  useNavigation,
+  usePathname,
+  useRootNavigationState,
+  useRouter,
+} from "expo-router";
 
 interface AuthProps {
   authState?: { token: string | null; authenticated: boolean | null };
@@ -18,7 +23,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: any) => {
-  const navigation = useNavigation();
+  const pathUrl = usePathname();
   const router = useRouter();
   const [authState, setAuthState] = useState<{
     token: string | null;
@@ -36,7 +41,7 @@ export const AuthProvider = ({ children }: any) => {
           token: token,
           authenticated: true,
         });
-        router.replace("/home");
+        if (pathUrl === "/") router.replace("/home");
       }
     };
     loadToken();
