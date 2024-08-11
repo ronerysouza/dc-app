@@ -72,4 +72,20 @@ export const globalStyles = StyleSheet.create({
     fontSize: 20,
     marginTop: 12,
   },
+  errorBoxMessage: {
+    borderColor: Colors.red,
+    borderWidth: 1,
+    padding: 8,
+    marginBottom: 16,
+  },
+  errorTextMessage: {
+    color: Colors.red,
+    fontSize: 12,
+    marginTop: -10,
+    marginBottom: 16,
+  },
+  errorTextBoxMessage: { color: Colors.red, fontSize: 12 },
+  inputError: {
+    borderColor: Colors.red,
+  },
 });

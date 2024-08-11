@@ -8,12 +8,41 @@ import * as SecureStore from "expo-secure-store";
 
 const TOKEN_KEY = "my-jwt";
 
+interface LoginInterface {
+  email?: string;
+  password?: string;
+  invalid?: string;
+}
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<LoginInterface>({});
+  const [load, setLoad] = useState(true);
   const { onLogin } = useAuth();
 
-  const [load, setLoad] = useState(true);
+  const validateForm = () => {
+    var errorsObj: LoginInterface = {};
+
+    if (!email) errorsObj.email = "E-mail obrigatório.";
+    if (!password) errorsObj.password = "Senha obrigatória.";
+
+    setErrors(errorsObj);
+
+    return Object.keys(errors).length === 0;
+  };
+
+  const sendForm = async () => {
+    // validateForm();
+    // console.log(validateForm());
+    if (validateForm()) {
+      const result = await onLogin!(email, password);
+      if (result.error) {
+        setErrors({ invalid: result.msg });
+      }
+      // console.log(result);
+    }
+  };
 
   useEffect(() => {
     const loadToken = async () => {
@@ -24,10 +53,6 @@ const Login = () => {
     };
     loadToken();
   }, []);
-
-  const sendForm = async () => {
-    const result = await onLogin!(email, password);
-  };
 
   if (load) {
     return (
@@ -46,7 +71,12 @@ const Login = () => {
         <View style={globalStyles.boxLogin}>
           <Text style={globalStyles.titleLogin}>Identifique-se</Text>
 
-          <View style={globalStyles.boxLabel}>
+          <View
+            style={[
+              globalStyles.boxLabel,
+              errors.email ? globalStyles.inputError : null,
+            ]}
+          >
             <Text style={globalStyles.textLabel}>E-mail:</Text>
             <TextInput
               style={globalStyles.inputLogin}
@@ -56,8 +86,16 @@ const Login = () => {
               value={email}
             />
           </View>
+          {errors.email ? (
+            <Text style={globalStyles.errorTextMessage}>{errors.email}</Text>
+          ) : null}
 
-          <View style={globalStyles.boxLabel}>
+          <View
+            style={[
+              globalStyles.boxLabel,
+              errors.password ? globalStyles.inputError : null,
+            ]}
+          >
             <Text style={globalStyles.textLabel}>Senha:</Text>
             <TextInput
               secureTextEntry={true}
@@ -68,6 +106,16 @@ const Login = () => {
               value={password}
             />
           </View>
+          {errors.password ? (
+            <Text style={globalStyles.errorTextMessage}>{errors.password}</Text>
+          ) : null}
+          {errors.invalid ? (
+            <View style={globalStyles.errorBoxMessage}>
+              <Text style={globalStyles.errorTextBoxMessage}>
+                {errors.invalid}
+              </Text>
+            </View>
+          ) : null}
 
           <TouchableOpacity
             style={globalStyles.buttonSubmit}
