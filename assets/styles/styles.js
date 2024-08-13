@@ -9,6 +9,11 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: Colors.white,
     flexDirection: "column",
   },
+  inner: {
+    alignContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
   logo: {
     marginBottom: 24,
   },

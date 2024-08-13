@@ -1,4 +1,14 @@
-import { View, Text, StyleSheet, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Link } from "expo-router";
@@ -62,88 +72,99 @@ const Login = () => {
     );
   } else {
     return (
-      <View style={globalStyles.container}>
-        <Image
-          source={require("@/assets/images/logo-delivery-chapada-login.png")}
-          style={globalStyles.logo}
-        />
-
-        <View style={globalStyles.boxLogin}>
-          <Text style={globalStyles.titleLogin}>Identifique-se</Text>
-
-          <View
-            style={[
-              globalStyles.boxLabel,
-              errors.email ? globalStyles.inputError : null,
-            ]}
-          >
-            <Text style={globalStyles.textLabel}>E-mail:</Text>
-            <TextInput
-              style={globalStyles.inputLogin}
-              placeholder="E-mail"
-              placeholderTextColor={"#999999"}
-              onChangeText={setEmail}
-              value={email}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={globalStyles.container}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={globalStyles.inner}>
+            <Image
+              source={require("@/assets/images/logo-delivery-chapada-login.png")}
+              style={globalStyles.logo}
             />
-          </View>
-          {errors.email ? (
-            <Text style={globalStyles.errorTextMessage}>{errors.email}</Text>
-          ) : null}
 
-          <View
-            style={[
-              globalStyles.boxLabel,
-              errors.password ? globalStyles.inputError : null,
-            ]}
-          >
-            <Text style={globalStyles.textLabel}>Senha:</Text>
-            <TextInput
-              secureTextEntry={true}
-              style={globalStyles.inputLogin}
-              placeholder="Senha"
-              placeholderTextColor={"#999999"}
-              onChangeText={setPassword}
-              value={password}
-            />
-          </View>
-          {errors.password ? (
-            <Text style={globalStyles.errorTextMessage}>{errors.password}</Text>
-          ) : null}
-          {errors.invalid ? (
-            <View style={globalStyles.errorBoxMessage}>
-              <Text style={globalStyles.errorTextBoxMessage}>
-                {errors.invalid}
+            <View style={globalStyles.boxLogin}>
+              <Text style={globalStyles.titleLogin}>Identifique-se</Text>
+
+              <View
+                style={[
+                  globalStyles.boxLabel,
+                  errors.email ? globalStyles.inputError : null,
+                ]}
+              >
+                <Text style={globalStyles.textLabel}>E-mail:</Text>
+                <TextInput
+                  style={globalStyles.inputLogin}
+                  placeholder="E-mail"
+                  placeholderTextColor={"#999999"}
+                  onChangeText={setEmail}
+                  value={email}
+                />
+              </View>
+              {errors.email ? (
+                <Text style={globalStyles.errorTextMessage}>
+                  {errors.email}
+                </Text>
+              ) : null}
+
+              <View
+                style={[
+                  globalStyles.boxLabel,
+                  errors.password ? globalStyles.inputError : null,
+                ]}
+              >
+                <Text style={globalStyles.textLabel}>Senha:</Text>
+                <TextInput
+                  secureTextEntry={true}
+                  style={globalStyles.inputLogin}
+                  placeholder="Senha"
+                  placeholderTextColor={"#999999"}
+                  onChangeText={setPassword}
+                  value={password}
+                />
+              </View>
+              {errors.password ? (
+                <Text style={globalStyles.errorTextMessage}>
+                  {errors.password}
+                </Text>
+              ) : null}
+              {errors.invalid ? (
+                <View style={globalStyles.errorBoxMessage}>
+                  <Text style={globalStyles.errorTextBoxMessage}>
+                    {errors.invalid}
+                  </Text>
+                </View>
+              ) : null}
+
+              <TouchableOpacity
+                style={globalStyles.buttonSubmit}
+                onPress={() => sendForm()}
+              >
+                <Text style={globalStyles.textButtonSubmit}>entrar</Text>
+              </TouchableOpacity>
+
+              <Link replace href={"/forgotPassword"} asChild>
+                <TouchableOpacity style={globalStyles.linkForgotPassword}>
+                  <Text style={globalStyles.textLinkForgotPassword}>
+                    Esqueceu sua senha?
+                  </Text>
+                </TouchableOpacity>
+              </Link>
+
+              <Text style={globalStyles.titleNotRegistered}>
+                Ainda não é cadastrado?
               </Text>
+              <Link replace href={"/register"} asChild>
+                <TouchableOpacity style={globalStyles.linkForgotPassword}>
+                  <Text style={globalStyles.textLinkRegister}>
+                    Registre-se agora!
+                  </Text>
+                </TouchableOpacity>
+              </Link>
             </View>
-          ) : null}
-
-          <TouchableOpacity
-            style={globalStyles.buttonSubmit}
-            onPress={() => sendForm()}
-          >
-            <Text style={globalStyles.textButtonSubmit}>entrar</Text>
-          </TouchableOpacity>
-
-          <Link replace href={"/forgotPassword"} asChild>
-            <TouchableOpacity style={globalStyles.linkForgotPassword}>
-              <Text style={globalStyles.textLinkForgotPassword}>
-                Esqueceu sua senha?
-              </Text>
-            </TouchableOpacity>
-          </Link>
-
-          <Text style={globalStyles.titleNotRegistered}>
-            Ainda não é cadastrado?
-          </Text>
-          <Link replace href={"/register"} asChild>
-            <TouchableOpacity style={globalStyles.linkForgotPassword}>
-              <Text style={globalStyles.textLinkRegister}>
-                Registre-se agora!
-              </Text>
-            </TouchableOpacity>
-          </Link>
-        </View>
-      </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
 };
