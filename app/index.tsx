@@ -43,14 +43,11 @@ const Login = () => {
   };
 
   const sendForm = async () => {
-    // validateForm();
-    // console.log(validateForm());
     if (validateForm()) {
       const result = await onLogin!(email, password);
       if (result.error) {
         setErrors({ invalid: result.msg });
       }
-      // console.log(result);
     }
   };
 

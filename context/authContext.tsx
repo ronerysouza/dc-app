@@ -7,6 +7,13 @@ import { UserProfile } from "@/models/User";
 interface AuthProps {
   authState?: { token: string | null; authenticated: boolean | null };
   onLogin?: (email: string, password: string) => Promise<any>;
+  onSaveCode?: (email: string) => Promise<any>;
+  onResetPassword?: (
+    user: string,
+    newPassword: string,
+    code: string
+  ) => Promise<any>;
+  onValidateCode?: (code: string, user: string) => Promise<any>;
   onRegister?: (
     userName: string,
     email: string,
@@ -107,9 +114,59 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
+  const saveCode = async (email: string) => {
+    try {
+      const result = await axios.post(API_URL + "/codes/save", {
+        email: email,
+        typeCode: "resetPassword",
+      });
+
+      if (result?.data.success) {
+        await SecureStore.setItemAsync("userResetPassword", result?.data.user);
+      }
+
+      return result?.data;
+    } catch (error) {
+      return { error: true, msg: (error as any).response.data.message };
+    }
+  };
+
+  const resetPassword = async (
+    user: string,
+    newPassword: string,
+    code: string
+  ) => {
+    try {
+      const result = await axios.post(API_URL + "/user/resetPassword", {
+        user: user,
+        newPassword: newPassword,
+        code: Number(code),
+      });
+
+      return result?.data;
+    } catch (error) {
+      return { error: true, msg: (error as any).response.data.message };
+    }
+  };
+
+  const validateCode = async (code: string, user: string) => {
+    try {
+      const result = await axios.post(API_URL + `/codes/${code}`, {
+        user: user,
+      });
+
+      return result?.data;
+    } catch (error) {
+      return { error: true, msg: (error as any).response.data.message };
+    }
+  };
+
   const value = {
     onLogin: login,
     onRegister: register,
+    onSaveCode: saveCode,
+    onResetPassword: resetPassword,
+    onValidateCode: validateCode,
     authState,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

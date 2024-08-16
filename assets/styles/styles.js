@@ -24,6 +24,12 @@ export const globalStyles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "600",
   },
+  subTitleLogin: {
+    fontSize: 14,
+    marginBottom: 24,
+    textAlign: "center",
+    fontWeight: "600",
+  },
   boxLabel: {
     borderColor: Colors.medium,
     borderWidth: 1,
