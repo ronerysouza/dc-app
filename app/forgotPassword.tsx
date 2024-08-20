@@ -143,6 +143,9 @@ const ForgotPassword = () => {
               >
                 <Text style={globalStyles.textLabel}>E-mail:</Text>
                 <TextInput
+                  keyboardType="email-address"
+                  inputMode="email"
+                  autoCapitalize="none"
                   style={globalStyles.inputLogin}
                   placeholder="E-mail"
                   placeholderTextColor={"#999999"}
@@ -194,7 +197,8 @@ const ForgotPassword = () => {
               >
                 <Text style={globalStyles.textLabel}>Código:</Text>
                 <TextInput
-                  inputMode="numeric"
+                  keyboardType="numeric"
+                  maxLength={5}
                   style={globalStyles.inputLogin}
                   placeholder="00000"
                   placeholderTextColor={"#999999"}

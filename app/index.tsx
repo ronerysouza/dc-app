@@ -91,6 +91,9 @@ const Login = () => {
               >
                 <Text style={globalStyles.textLabel}>E-mail:</Text>
                 <TextInput
+                  keyboardType="email-address"
+                  inputMode="email"
+                  autoCapitalize="none"
                   style={globalStyles.inputLogin}
                   placeholder="E-mail"
                   placeholderTextColor={"#999999"}

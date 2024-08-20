@@ -116,6 +116,9 @@ const Register = () => {
             >
               <Text style={globalStyles.textLabel}>E-mail:</Text>
               <TextInput
+                keyboardType="email-address"
+                inputMode="email"
+                autoCapitalize="none"
                 style={globalStyles.inputLogin}
                 placeholder="E-mail"
                 placeholderTextColor={"#999999"}
@@ -135,6 +138,9 @@ const Register = () => {
             >
               <Text style={globalStyles.textLabel}>Celular:</Text>
               <TextInput
+                keyboardType="numeric"
+                inputMode="decimal"
+                maxLength={11}
                 style={globalStyles.inputLogin}
                 placeholder="Celular"
                 placeholderTextColor={"#999999"}

@@ -14,6 +14,8 @@ interface AuthProps {
     code: string
   ) => Promise<any>;
   onValidateCode?: (code: string, user: string) => Promise<any>;
+  onValidateSmsCode?: (code: string, phone: string) => Promise<any>;
+  onSendSmsCode?: (code: string) => Promise<any>;
   onRegister?: (
     userName: string,
     email: string,
@@ -21,6 +23,7 @@ interface AuthProps {
     password: string,
     userType: string
   ) => Promise<any>;
+  onValidatePhone?: () => Promise<any>;
 }
 
 const TOKEN_KEY = "my-jwt";
@@ -80,8 +83,9 @@ export const AuthProvider = ({ children }: any) => {
         `Bearer ${result?.data.saveToken.token}`;
 
       await SecureStore.setItemAsync(TOKEN_KEY, result?.data.saveToken.token);
+      await SecureStore.setItemAsync("phoneToValidate", "+55" + phone);
 
-      router.replace("/home");
+      router.replace("/phoneVerification");
 
       return result;
     } catch (error) {
@@ -161,12 +165,65 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
+  const validateSmsCode = async (code: string, phone: string) => {
+    try {
+      const result = await axios.post(API_URL + `/phoneCodes/${code}`, {
+        phone: phone,
+      });
+
+      return result?.status;
+    } catch (error) {
+      return { error: true, msg: (error as any).response.data.message };
+    }
+  };
+
+  const sendSmsCode = async (phone: string) => {
+    try {
+      const result = await axios.post(API_URL + `/phoneCodes/send`, {
+        phone: phone,
+      });
+
+      return result?.data;
+    } catch (error) {
+      return { error: true, msg: (error as any).response.data.message };
+    }
+  };
+
+  const updateValidatePhone = async () => {
+    try {
+      const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+      const configurationObject = {
+        url: API_URL + "/user/updateUser",
+        headers: { Authorization: "Bearer " + token },
+        method: "PUT",
+        data: { phoneValidated: true },
+      };
+
+      axios(configurationObject)
+        .then((response) => {
+          if (response.status === 200) {
+          } else {
+            throw new Error("Erro ao salvar phoneValidated - Then");
+          }
+        })
+        .catch((error) => {
+          console.log("Erro ao salvar phoneValidated - genérico");
+        });
+    } catch (error) {
+      return { error: true, msg: (error as any).response.data.message };
+    }
+  };
+
   const value = {
     onLogin: login,
     onRegister: register,
     onSaveCode: saveCode,
     onResetPassword: resetPassword,
     onValidateCode: validateCode,
+    onValidateSmsCode: validateSmsCode,
+    onSendSmsCode: sendSmsCode,
+    onValidatePhone: updateValidatePhone,
     authState,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

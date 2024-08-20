@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "expo-router";
 
 interface AuthLoggedProps {
   authState?: { token: string | null; authenticated: boolean | null };
+  onUpdateUser?: (user: object) => Promise<any>;
   onLogout?: () => Promise<any>;
 }
 
@@ -46,6 +47,7 @@ export const AuthLoggedProvider = ({ children }: any) => {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
     await SecureStore.deleteItemAsync("user");
     await SecureStore.deleteItemAsync("userResetPassword");
+
     axios.defaults.headers.common["Authorization"] = "";
 
     setAuthState({
@@ -55,8 +57,32 @@ export const AuthLoggedProvider = ({ children }: any) => {
     router.replace("/");
   };
 
+  const updateUser = async (user: object) => {
+    try {
+      const result = await axios.post(API_URL + "/auth/register", user);
+
+      // setAuthState({
+      //   token: result?.data.saveToken.token,
+      //   authenticated: true,
+      // });
+
+      // axios.defaults.headers.common["Authorization"] =
+      //   `Bearer ${result?.data.saveToken.token}`;
+
+      // await SecureStore.setItemAsync(TOKEN_KEY, result?.data.saveToken.token);
+      // await SecureStore.setItemAsync("phoneToValidate", "+55" + phone);
+
+      // router.replace("/phoneVerification");
+
+      // return result;
+    } catch (error) {
+      return { error: true, msg: (error as any).response.data.message };
+    }
+  };
+
   const value = {
     onLogout: logout,
+    onUpdateUser: updateUser,
     authState,
   };
   return (
