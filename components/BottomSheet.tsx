@@ -1,4 +1,4 @@
-import { View, Text, Button, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React, { forwardRef, useCallback, useMemo } from "react";
 import {
   BottomSheetBackdrop,
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     borderRadius: 50,
     fontSize: 16,
+    fontFamily: "Inter_400Regular",
   },
   toogleTextActive: {
     color: Colors.white,
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
   },
   toogleTextInactive: {
     color: Colors.primary,
+    fontFamily: "Inter_400Regular",
   },
   buttonConfirmation: {
     backgroundColor: Colors.primary,
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
   },
   titleH2: {
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: "Inter_700Bold",
     marginBottom: 8,
     color: Colors.mediumDark,
   },
@@ -135,12 +137,13 @@ const styles = StyleSheet.create({
   },
   textButtonAddNewAddress: {
     textAlign: "center",
+    fontFamily: "Inter_600SemiBold",
   },
   textConfirmation: {
     color: Colors.white,
     textAlign: "center",
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: "Inter_600SemiBold",
     textTransform: "uppercase",
   },
   notFound: {

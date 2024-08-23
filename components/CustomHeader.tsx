@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   TextInput,
@@ -46,7 +45,7 @@ const CustomHeader = () => {
     await onLogout!();
   };
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <>
       <BottomSheet ref={bottomSheetRef} />
       <View style={styles.container}>
         <TouchableOpacity style={styles.addressIcon} onPress={openModal}>
@@ -64,7 +63,7 @@ const CustomHeader = () => {
         </TouchableOpacity>
       </View>
       <SearchBar />
-    </SafeAreaView>
+    </>
   );
 };
 
@@ -90,12 +89,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleAddress: {
+    fontFamily: "Inter_400Regular",
     fontSize: 12,
     color: Colors.medium,
   },
   textAddress: {
     fontSize: 14,
-    fontWeight: "600",
+    fontFamily: "Inter_600SemiBold",
   },
   userButton: {
     backgroundColor: Colors.lightGrey,

@@ -2,6 +2,14 @@ import Colors from "@/constants/Colors";
 import { StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
+  titleSection: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 16,
+  },
+  textDefault: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -22,13 +30,13 @@ export const globalStyles = StyleSheet.create({
     fontSize: 28,
     marginBottom: 24,
     textAlign: "center",
-    fontWeight: "600",
+    fontFamily: "Inter_700Bold",
   },
   subTitleLogin: {
     fontSize: 14,
     marginBottom: 24,
     textAlign: "center",
-    fontWeight: "600",
+    fontFamily: "Inter_600SemiBold",
   },
   boxLabel: {
     borderColor: Colors.medium,
@@ -47,11 +55,13 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: Colors.white,
     color: Colors.medium,
     fontSize: 12,
+    fontFamily: "Inter_400Regular",
   },
   inputLogin: {
     width: "80%",
     paddingVertical: 8,
     fontSize: 16,
+    fontFamily: "Inter_400Regular",
   },
   buttonSubmit: {
     backgroundColor: Colors.primary,
@@ -66,19 +76,22 @@ export const globalStyles = StyleSheet.create({
     color: Colors.white,
     textAlign: "center",
     fontSize: 20,
-    fontWeight: "600",
+    fontFamily: "Inter_600SemiBold",
   },
   linkForgotPassword: {
     marginHorizontal: "auto",
     marginVertical: 16,
   },
-  textLinkForgotPassword: {},
+  textLinkForgotPassword: {
+    fontFamily: "Inter_400Regular",
+  },
   textLinkRegister: {
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: "Inter_600SemiBold",
     color: Colors.blue,
   },
   titleNotRegistered: {
+    fontFamily: "Inter_400Regular",
     textAlign: "center",
     fontSize: 20,
     marginTop: 12,
@@ -90,6 +103,7 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 16,
   },
   errorTextMessage: {
+    fontFamily: "Inter_400Regular",
     color: Colors.red,
     fontSize: 12,
     marginTop: -10,
