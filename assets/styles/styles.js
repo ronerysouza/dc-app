@@ -2,6 +2,13 @@ import Colors from "@/constants/Colors";
 import { StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+  },
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.green,
+  },
   titleSection: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 16,
