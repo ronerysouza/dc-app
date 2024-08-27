@@ -12,6 +12,8 @@ export const globalStyles = StyleSheet.create({
   titleSection: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 16,
+    paddingHorizontal: 12,
+    paddingTop: 8,
   },
   textDefault: {
     fontFamily: "Inter_400Regular",

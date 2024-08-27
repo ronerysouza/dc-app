@@ -3,6 +3,9 @@
 # dependencies
 node_modules/
 
+# data text
+assets/data/
+
 # Expo
 .expo/
 dist/

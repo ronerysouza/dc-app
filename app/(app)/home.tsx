@@ -4,6 +4,8 @@ import Categories from "@/components/Categories";
 import Colors from "@/constants/Colors";
 import { globalStyles } from "@/assets/styles/styles";
 import { ScrollView } from "react-native-gesture-handler";
+import BannersStores from "@/components/BannersStores";
+import LastStores from "@/components/LastStores";
 
 const Page = () => {
   return (
@@ -11,8 +13,12 @@ const Page = () => {
       <ScrollView>
         <Categories />
 
+        <BannersStores />
+
         <Text style={globalStyles.titleSection}>Restaurantes:</Text>
-        <Text style={globalStyles.titleSection}>Promoções:</Text>
+        <LastStores />
+
+        {/* <Text style={globalStyles.titleSection}>Promoções:</Text> */}
       </ScrollView>
     </View>
   );

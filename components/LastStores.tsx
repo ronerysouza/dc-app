@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   Image,
   ScrollView,
   StyleSheet,
@@ -7,28 +8,32 @@ import {
   View,
 } from "react-native";
 import React, { Component } from "react";
-import { categories } from "@/assets/data/home";
+import { stores } from "@/assets/data/home";
 import Colors from "@/constants/Colors";
 import { Link } from "expo-router";
 
-export class Categories extends Component {
+var { width } = Dimensions.get("window");
+export class LastStores extends Component {
   render() {
     return (
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ padding: 12 }}
+        contentContainerStyle={{
+          paddingVertical: 12,
+          paddingLeft: 12,
+        }}
       >
-        {categories.map((category, index) => (
-          <Link href={"/home"} asChild style={styles.categoryCard} key={index}>
+        {stores.map((store, index) => (
+          <Link href={"/home"} asChild style={styles.storeCard} key={index}>
             <TouchableOpacity>
               <Image
                 source={{
-                  uri: category.urlImage,
+                  uri: store.logoUrl,
                 }}
-                style={styles.categoryImage}
+                style={styles.storeImage}
               />
-              <Text style={styles.categoryLabel}>{category.title}</Text>
+              <Text style={styles.storeLabel}>{store.title}</Text>
             </TouchableOpacity>
           </Link>
         ))}
@@ -38,15 +43,16 @@ export class Categories extends Component {
 }
 
 const styles = StyleSheet.create({
-  categoryCard: {
+  storeCard: {
     padding: 4,
     marginEnd: 4,
     alignItems: "center",
+    maxWidth: 120,
   },
-  categoryLabel: {
+  storeLabel: {
     textAlign: "center",
   },
-  categoryImage: {
+  storeImage: {
     width: 80,
     height: 80,
     borderRadius: 80,
@@ -57,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Categories;
+export default LastStores;
