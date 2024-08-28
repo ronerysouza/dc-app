@@ -8,9 +8,10 @@ import {
   View,
 } from "react-native";
 import React, { Component } from "react";
-import { stores } from "@/assets/data/home";
+import { products } from "@/assets/data/home";
 import Colors from "@/constants/Colors";
 import { Link } from "expo-router";
+import { globalStyles } from "@/assets/styles/styles";
 
 var { width } = Dimensions.get("window");
 export class LastPromotionalProducts extends Component {
@@ -24,16 +25,50 @@ export class LastPromotionalProducts extends Component {
           paddingLeft: 12,
         }}
       >
-        {stores.map((store, index) => (
-          <Link href={"/home"} asChild style={styles.storeCard} key={index}>
-            <TouchableOpacity>
+        {products.map((product, index) => (
+          <Link href={"/home"} asChild style={styles.productCard} key={index}>
+            <TouchableOpacity style={styles.touchCard}>
               <Image
                 source={{
-                  uri: store.logoUrl,
+                  uri: product.imageUrl,
                 }}
-                style={styles.storeImage}
+                style={styles.productImage}
               />
-              <Text style={styles.storeLabel}>{store.title}</Text>
+              <Image
+                source={{
+                  uri: product.store.logoUrl,
+                }}
+                style={styles.logo}
+              />
+              <Text style={[globalStyles.textDefault, styles.productText]}>
+                {product.title}
+              </Text>
+              <Text
+                style={[globalStyles.textDefault, styles.productTextOldPrice]}
+              >
+                R${product.oldPrice}
+              </Text>
+              <Text style={[globalStyles.textDefault, styles.productTextPrice]}>
+                R${product.price}
+              </Text>
+              <View style={styles.boxTextLine}>
+                <Text
+                  style={[globalStyles.textDefault, styles.productTextTime]}
+                >
+                  R${product.store.minDeliveryTime}-
+                  {product.store.maxDeliveryTime}min
+                </Text>
+                <Text
+                  style={[
+                    globalStyles.textDefault,
+                    styles.productTextDeliveryFree,
+                  ]}
+                >
+                  {product.store.deliveryPrice === 0
+                    ? "Grátis"
+                    : "R$" + product.store.deliveryPrice}
+                </Text>
+              </View>
             </TouchableOpacity>
           </Link>
         ))}
@@ -43,23 +78,47 @@ export class LastPromotionalProducts extends Component {
 }
 
 const styles = StyleSheet.create({
-  storeCard: {
-    padding: 4,
-    marginEnd: 4,
+  productCard: {
+    marginEnd: 12,
+    position: "relative",
+  },
+  logo: {
+    width: 45,
+    height: 45,
+    position: "absolute",
+    top: 5,
+    left: 5,
+  },
+  productTextOldPrice: {
+    fontSize: 12,
+    textDecorationLine: "line-through",
+    color: Colors.medium,
+  },
+  productTextPrice: {
+    fontSize: 16,
+    fontFamily: "Inter_600SemiBold",
+  },
+  touchCard: {},
+  productText: {
+    paddingVertical: 4,
+  },
+  boxTextLine: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    maxWidth: 120,
+    paddingVertical: 4,
   },
-  storeLabel: {
-    textAlign: "center",
+  productTextTime: {
+    fontSize: 13,
   },
-  storeImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 80,
-    marginBottom: 4,
-    borderStyle: "solid",
-    borderWidth: 4,
-    borderColor: Colors.white,
+  productTextDeliveryFree: {
+    color: Colors.primary,
+  },
+  productImage: {
+    width: 140,
+    height: 105,
+    borderRadius: 8,
   },
 });
 
