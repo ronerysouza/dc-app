@@ -13,7 +13,6 @@ const Page = () => {
     <View style={globalStyles.screenContainer}>
       <ScrollView>
         <Categories />
-
         <BannersStores />
 
         <Text style={globalStyles.titleSection}>Restaurantes:</Text>

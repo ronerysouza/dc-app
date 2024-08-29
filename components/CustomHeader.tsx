@@ -11,7 +11,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import BottomSheet from "./BottomSheet";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { useLoggedAuth } from "@/context/authContextLogged";
 
 const SearchBar = () => (
   <View style={styles.searchContainer}>
@@ -35,15 +34,11 @@ const SearchBar = () => (
 
 const CustomHeader = () => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const { onLogout } = useLoggedAuth();
 
   const openModal = () => {
     bottomSheetRef.current?.present();
   };
 
-  const logout = async () => {
-    await onLogout!();
-  };
   return (
     <>
       <BottomSheet ref={bottomSheetRef} />
@@ -58,9 +53,11 @@ const CustomHeader = () => {
             <Ionicons name="chevron-down" size={18} color={Colors.primary} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.userButton} onPress={logout}>
-          <Ionicons name="person-outline" size={20} color={Colors.primary} />
-        </TouchableOpacity>
+        <Link href={"/profile"} asChild>
+          <TouchableOpacity style={styles.userButton}>
+            <Ionicons name="person-outline" size={20} color={Colors.primary} />
+          </TouchableOpacity>
+        </Link>
       </View>
       <SearchBar />
     </>

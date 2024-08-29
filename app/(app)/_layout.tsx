@@ -18,6 +18,14 @@ export default function Layout() {
                 header: () => <CustomHeader />,
               }}
             />
+            <Stack.Screen
+              name="profile"
+              // options={{ headerShown: false }}
+              options={{ title: "Minha conta", headerBackTitleVisible: false }}
+              // options={{
+              //   header: () => <CustomHeader />,
+              // }}
+            />
           </Stack>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
