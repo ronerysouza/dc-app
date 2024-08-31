@@ -45,7 +45,7 @@ export default function Layout() {
               }}
             />
             <Tabs.Screen
-              name="orders"
+              name="orders/index"
               options={{
                 title: "Pedidos",
                 headerShown: false,
@@ -55,7 +55,7 @@ export default function Layout() {
               }}
             />
             <Tabs.Screen
-              name="account"
+              name="account/index"
               options={{
                 title: "Minha conta",
                 headerShown: false,

@@ -12,7 +12,7 @@ import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useLoggedAuth } from "@/context/authContextLogged";
 
-const Account = () => {
+const Index = () => {
   const { onLogout } = useLoggedAuth();
 
   const logout = async () => {
@@ -56,7 +56,26 @@ const Account = () => {
                   color={Colors.mediumDark}
                 />
                 <Text style={[globalStyles.textDefault, styles.textLink]}>
-                  Meus dados
+                  Meus pedidos
+                </Text>
+                <Ionicons
+                  name="chevron-forward"
+                  size={24}
+                  color={Colors.mediumDark}
+                />
+              </View>
+            </TouchableOpacity>
+          </Link>
+          <Link href={"/(app)/home"} asChild>
+            <TouchableOpacity>
+              <View style={[styles.boxLink]}>
+                <Ionicons
+                  name="location-outline"
+                  size={24}
+                  color={Colors.mediumDark}
+                />
+                <Text style={[globalStyles.textDefault, styles.textLink]}>
+                  Meus endereços
                 </Text>
                 <Ionicons
                   name="chevron-forward"
@@ -114,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Account;
+export default Index;
