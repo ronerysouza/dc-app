@@ -10,9 +10,9 @@ import * as SplashScreen from "expo-splash-screen";
 import Colors from "@/constants/Colors";
 import { AuthProvider } from "@/context/authContext";
 import { Stack } from "expo-router";
-import { SafeAreaView, StyleSheet, Appearance } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,12 +24,8 @@ export default function RootLayoutNav() {
     Inter_700Bold,
     Inter_900Black,
   });
-  const [colorMode, setColorMode] = useState(Appearance.getColorScheme());
 
   useEffect(() => {
-    Appearance.addChangeListener(({ colorScheme }) => {
-      setColorMode(colorScheme);
-    });
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
@@ -41,9 +37,7 @@ export default function RootLayoutNav() {
 
   return (
     <AuthProvider>
-      <SafeAreaView
-        style={colorMode === "dark" ? styles.safeAreaDark : styles.safeArea}
-      >
+      <SafeAreaView style={styles.safeArea}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <Stack
             screenOptions={{
@@ -61,9 +55,5 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: Colors.white,
-  },
-  safeAreaDark: {
-    flex: 1,
-    backgroundColor: Colors.green,
   },
 });
