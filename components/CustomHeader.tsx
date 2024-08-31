@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useRef } from "react";
 import Colors from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import BottomSheet from "./BottomSheet";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -23,11 +23,11 @@ const SearchBar = () => (
           style={styles.inputSearch}
         />
       </View>
-      <Link replace href={"/home"} asChild>
+      {/* <Link replace href={"/home"} asChild>
         <TouchableOpacity style={styles.optionButton}>
           <Ionicons name="options-outline" size={20} color={Colors.primary} />
         </TouchableOpacity>
-      </Link>
+      </Link> */}
     </View>
   </View>
 );
@@ -53,11 +53,9 @@ const CustomHeader = () => {
             <Ionicons name="chevron-down" size={18} color={Colors.primary} />
           </View>
         </TouchableOpacity>
-        <Link href={"/profile"} asChild>
-          <TouchableOpacity style={styles.userButton}>
-            <Ionicons name="person-outline" size={20} color={Colors.primary} />
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity style={styles.alertButton} onPress={openModal}>
+          <FontAwesome name="bell-o" size={24} color={Colors.primary} />
+        </TouchableOpacity>
       </View>
       <SearchBar />
     </>
@@ -65,7 +63,6 @@ const CustomHeader = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: Colors.green },
   container: {
     height: 60,
     backgroundColor: Colors.white,
@@ -74,7 +71,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    borderBottomColor: Colors.grey,
+    borderBottomColor: Colors.lightGrey,
     borderBottomWidth: 1,
   },
   addressIcon: {},
@@ -94,9 +91,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Inter_600SemiBold",
   },
-  userButton: {
-    backgroundColor: Colors.lightGrey,
-    padding: 10,
+  alertButton: {
+    paddingHorizontal: 10,
     borderRadius: 50,
   },
   searchContainer: {
@@ -106,6 +102,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
+    shadowColor: "#666666",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   searchSection: {
     flexDirection: "row",

@@ -12,7 +12,7 @@ import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useLoggedAuth } from "@/context/authContextLogged";
 
-const Profile = () => {
+const Account = () => {
   const { onLogout } = useLoggedAuth();
 
   const logout = async () => {
@@ -114,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default Account;

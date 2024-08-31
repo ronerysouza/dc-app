@@ -1,8 +1,9 @@
 import CustomHeader from "@/components/CustomHeader";
 import Colors from "@/constants/Colors";
 import { AuthLoggedProvider } from "@/context/authContextLogged";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Stack } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -11,22 +12,59 @@ export default function Layout() {
     <AuthLoggedProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <BottomSheetModalProvider>
-          <Stack>
-            <Stack.Screen
+          <Tabs
+            screenOptions={{
+              tabBarActiveTintColor: Colors.primary,
+              tabBarStyle: {
+                height: 60,
+                paddingVertical: 8,
+                backgroundColor: Colors.white,
+                shadowColor: "#666666",
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity: 0.2,
+                shadowRadius: 3,
+              },
+              tabBarItemStyle: {
+                height: 44,
+              },
+              tabBarLabelStyle: {
+                fontSize: 12,
+                fontFamily: "Inter_600SemiBold",
+                padding: 0,
+              },
+            }}
+          >
+            <Tabs.Screen
               name="home"
               options={{
+                title: "Início",
                 header: () => <CustomHeader />,
+                tabBarIcon: ({ color }) => (
+                  <Ionicons name="home-outline" size={24} color={color} />
+                ),
               }}
             />
-            <Stack.Screen
-              name="profile"
-              // options={{ headerShown: false }}
-              options={{ title: "Minha conta", headerBackTitleVisible: false }}
-              // options={{
-              //   header: () => <CustomHeader />,
-              // }}
+            <Tabs.Screen
+              name="orders"
+              options={{
+                title: "Pedidos",
+                headerShown: false,
+                tabBarIcon: ({ color }) => (
+                  <Ionicons name="receipt-outline" size={24} color={color} />
+                ),
+              }}
             />
-          </Stack>
+            <Tabs.Screen
+              name="account"
+              options={{
+                title: "Minha conta",
+                headerShown: false,
+                tabBarIcon: ({ color }) => (
+                  <Ionicons name="person-outline" size={24} color={color} />
+                ),
+              }}
+            />
+          </Tabs>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
     </AuthLoggedProvider>
