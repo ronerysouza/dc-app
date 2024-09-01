@@ -14,6 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "br.com.deliverychapada.dc-app",
       "config": {
         "usesNonExemptEncryption": false
       }

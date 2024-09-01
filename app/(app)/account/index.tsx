@@ -66,7 +66,7 @@ const Index = () => {
               </View>
             </TouchableOpacity>
           </Link>
-          <Link href={"/(app)/home"} asChild>
+          <Link href={"/account/listAddresses"} asChild>
             <TouchableOpacity>
               <View style={[styles.boxLink]}>
                 <Ionicons

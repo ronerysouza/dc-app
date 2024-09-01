@@ -55,7 +55,7 @@ export default function Layout() {
               }}
             />
             <Tabs.Screen
-              name="account/index"
+              name="account"
               options={{
                 title: "Minha conta",
                 headerShown: false,

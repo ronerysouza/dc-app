@@ -42,9 +42,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     gap: 8,
-    // borderBottomColor: Colors.white,
-    // borderBottomWidth: 2,
-    // borderStyle: "solid",
     paddingVertical: 16,
   },
   textLink: {
