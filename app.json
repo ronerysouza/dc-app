@@ -14,7 +14,6 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "br.com.deliverychapada.dc-app",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -30,7 +29,18 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": ["expo-router", "expo-secure-store", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
+      "expo-location",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Delivery Chapada deseja usar sua localização enquanto estiver usando o aplicativo."
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
     }

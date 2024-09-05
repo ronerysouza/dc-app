@@ -51,7 +51,7 @@ const BottomSheet = forwardRef<Ref>((props, ref) => {
             <Text style={styles.notFoundText}>Nenhum endereço cadastrado</Text>
           </View>
 
-          <Link href={"/(app)/account/addAddress"} asChild>
+          <Link href={"/(app)/account"} asChild>
             <TouchableOpacity style={styles.buttonAddNewAddress}>
               <Text style={styles.textButtonAddNewAddress}>
                 Adicionar novo endereço

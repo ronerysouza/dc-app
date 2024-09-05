@@ -11,12 +11,18 @@ export default function Layout() {
       >
         <Stack.Screen name="index" />
         <Stack.Screen name="listAddresses" />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="addAddress"
           options={{
             presentation: "modal",
           }}
         />
+        <Stack.Screen
+          name="addAddressByZipCode"
+          options={{
+            presentation: "modal",
+          }}
+        /> */}
       </Stack>
     </GestureHandlerRootView>
   );
