@@ -84,6 +84,7 @@ export const AuthProvider = ({ children }: any) => {
 
       await SecureStore.setItemAsync(TOKEN_KEY, result?.data.saveToken.token);
       await SecureStore.setItemAsync("phoneToValidate", "+55" + phone);
+      await SecureStore.setItemAsync("userId", result?.data.saveToken.user._id);
 
       router.replace("/phoneVerification");
 
@@ -109,6 +110,11 @@ export const AuthProvider = ({ children }: any) => {
         `Bearer ${result?.data.saveToken.token}`;
 
       await SecureStore.setItemAsync(TOKEN_KEY, result?.data.saveToken.token);
+      await SecureStore.setItemAsync(
+        "userInfos",
+        JSON.stringify(result?.data.saveToken.user)
+      );
+      await SecureStore.setItemAsync("userId", result?.data.saveToken.user._id);
 
       router.replace("/home");
 

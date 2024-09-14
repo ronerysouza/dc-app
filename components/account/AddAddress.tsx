@@ -4,8 +4,10 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import { globalStyles } from "@/assets/styles/styles";
 import { useRouter } from "expo-router";
+import { useLoggedAuth } from "@/context/authContextLogged";
 
 const AddAdress = () => {
+  const { onSaveAddress } = useLoggedAuth();
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState("");
   const [latitude, setLatitude] = useState(0);
@@ -13,6 +15,32 @@ const AddAdress = () => {
   const [address, setAddress] = useState<any>(null);
 
   const [mapRegion, setMapRegion] = useState<any>(null);
+
+  const saveAddress = async () => {
+    const newAddress = {
+      title: address?.street,
+      zipCode: address?.postalCode,
+      street: address?.street,
+      number: address?.streetNumber,
+      neighborhood: address?.district,
+      city: address?.city,
+      state: address?.region,
+      coords: {
+        latitude: latitude,
+        latitudeDelta: 0.0001,
+        longitude: longitude,
+        longitudeDelta: 0.0009,
+      },
+      mainAddress: true,
+    };
+
+    const resultAddress = await onSaveAddress!(newAddress);
+    // console.log("UUUUUUUUUU");
+    // console.log(resultAddress);
+    if (resultAddress) {
+      router.replace("/home");
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -61,7 +89,7 @@ const AddAdress = () => {
           {address?.region ? ", " + address?.region : null}
           {address?.postalCode ? " - CEP: " + address?.postalCode : null}
         </Text>
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => saveAddress()}>
           <View style={globalStyles.buttonSubmit}>
             <Text style={globalStyles.textButtonSubmit}>Confirmar</Text>
           </View>

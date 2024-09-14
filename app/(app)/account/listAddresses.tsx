@@ -46,7 +46,7 @@ const ListAddresses = () => {
 
       if (coords) {
         const { latitude, longitude } = coords;
-        console.log("Lat e Long: " + latitude, longitude);
+        // console.log("Lat e Long: " + latitude, longitude);
         setLatitude(latitude);
         setLongitude(longitude);
 
@@ -54,8 +54,6 @@ const ListAddresses = () => {
           latitude,
           longitude,
         });
-
-        console.log("USER ADDRESS: " + JSON.stringify(response));
       }
 
       const objLocatioin = {

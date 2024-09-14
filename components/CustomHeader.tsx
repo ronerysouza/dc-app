@@ -5,12 +5,14 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Colors from "@/constants/Colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link } from "expo-router";
 import BottomSheet from "./BottomSheet";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useLoggedAuth } from "@/context/authContextLogged";
 
 const SearchBar = () => (
   <View style={styles.searchContainer}>
@@ -33,11 +35,81 @@ const SearchBar = () => (
 );
 
 const CustomHeader = () => {
+  const [address, setAddress] = useState<any>(null);
+  const [locationOn, setLocationOn] = useState(false);
+  const {
+    onChangeAddress,
+    onSelectedAddress,
+    onGetCurrentLocation,
+    onUnsetMainAddress,
+  } = useLoggedAuth();
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
+  const getSelectedAddress = async () => {
+    setLocationOn(false);
+    const selecetedAdd = JSON.parse(await onSelectedAddress!());
+
+    if (!selecetedAdd) {
+      const location = await onGetCurrentLocation!();
+
+      if (location && location.length > 0) {
+        setLocationOn(true);
+      }
+      setAddress(location[0]);
+
+      return;
+    }
+
+    setAddress(selecetedAdd);
+    return;
+
+    // const addresses = data?.address;
+
+    // // const mainAddress = addresses.filter((person) => person.name !== "John");
+
+    // if (addresses.length <= 0) {
+    //   console.log("Nenhum endereço selecionado.");
+
+    //   const location = await onGetCurrentLocation!();
+
+    //   if (location && location.length > 0) {
+    //     setLocationOn(true);
+    //   }
+    //   // console.log(location);
+    //   setAddress(location[0]);
+
+    //   return;
+    // }
+
+    // if (addresses.length === 1) {
+    //   setAddress(addresses[0]);
+    //   return;
+    // }
+
+    // if (addresses.length > 1) {
+    //   for (let i = 0; i < addresses.length; i++) {
+    //     return;
+    //     console.log(addresses[i]);
+    //   }
+    //   setAddress(addresses[0]);
+    //   return;
+    // }
+
+    // const selectedAddress
+
+    // setAddress(user.address[0]);
+    // console.log("Opppppaaaa");
+    // console.log(selectedAddress);
+  };
+
   const openModal = () => {
+    getSelectedAddress();
     bottomSheetRef.current?.present();
   };
+
+  useEffect(() => {
+    getSelectedAddress();
+  }, []);
 
   return (
     <>
@@ -47,9 +119,27 @@ const CustomHeader = () => {
           <Ionicons name="bicycle-outline" size={28} color={Colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.addressBox} onPress={openModal}>
-          <Text style={styles.titleAddress}>Endereço para entrega:</Text>
+          <Text style={styles.titleAddress}>
+            {locationOn ? "Sua localização:" : "Endereço para entrega:"}
+          </Text>
           <View style={styles.lineAddress}>
-            <Text style={styles.textAddress}>Av. Castro Alves, 182</Text>
+            {address ? (
+              <>
+                {locationOn ? (
+                  <MaterialIcons
+                    name="my-location"
+                    size={16}
+                    color={Colors.green}
+                    style={{ marginRight: 4 }}
+                  />
+                ) : null}
+
+                <Text style={styles.textAddress}>
+                  {address?.street},{" "}
+                  {address?.number ? address?.number : address?.streetNumber}
+                </Text>
+              </>
+            ) : null}
             <Ionicons name="chevron-down" size={18} color={Colors.primary} />
           </View>
         </TouchableOpacity>
