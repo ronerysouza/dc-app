@@ -19,6 +19,12 @@ export const globalStyles = StyleSheet.create({
     fontFamily: "Inter_400Regular",
     fontSize: 14,
   },
+  textDefaultBold: {
+    fontFamily: "Inter_700Bold",
+  },
+  textDefaultSemiBold: {
+    fontFamily: "Inter_600SemiBold",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -121,5 +127,30 @@ export const globalStyles = StyleSheet.create({
   errorTextBoxMessage: { color: Colors.red, fontSize: 12 },
   inputError: {
     borderColor: Colors.red,
+  },
+  modalHeader: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: Colors.green,
+    color: Colors.white,
+    alignItems: "center",
+    fontSize: 16,
+    fontFamily: "Inter_600SemiBold",
+  },
+  mBottom12: {
+    marginBottom: 12,
+  },
+  pTop12: {
+    paddingTop: 12,
+  },
+  textCenter: {
+    textAlign: "center",
+  },
+  alignVerticalCenter: {
+    alignItems: "center",
+  },
+  warning: {
+    padding: 12,
+    backgroundColor: Colors.warning,
   },
 });

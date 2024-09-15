@@ -8,11 +8,12 @@ interface AuthLoggedProps {
   authState?: { token: string | null; authenticated: boolean | null };
   onUpdateUser?: (user: object) => Promise<any>;
   onGetUser?: (user: object) => Promise<any>;
-  onChangeAddress?: () => Promise<any>;
+  onChangeAddress?: (address: object) => Promise<any>;
   onSelectedAddress?: () => Promise<any>;
   onGetCurrentLocation?: () => Promise<any>;
   onSaveAddress?: (address: object) => Promise<any>;
   onUnsetMainAddress?: () => Promise<any>;
+  onGetAddressesByUserId?: () => Promise<any>;
   onLogout?: () => Promise<any>;
 }
 
@@ -113,47 +114,23 @@ export const AuthLoggedProvider = ({ children }: any) => {
     // const result = await axios.post(API_URL + "/address/user/", user);
   };
 
-  const changeAddress = async () => {
+  const changeAddress = async (address: object) => {
+    await SecureStore.deleteItemAsync("selectedAddress");
+    await SecureStore.setItemAsync("selectedAddress", JSON.stringify(address));
+    return address;
     // const token = await SecureStore.getItemAsync(TOKEN_KEY);
-    const userInfos = await SecureStore.getItemAsync("userInfos");
+    // const userInfos = await SecureStore.getItemAsync("userInfos");
     // console.log("Infos User:::::::");
     // console.log(userInfos);
 
-    return userInfos;
+    // return userInfos;
     // console.log(user);
     // const result = await axios.post(API_URL + "/address/user/", user);
   };
 
   const selectedAddress = async () => {
     const address = await SecureStore.getItemAsync("selectedAddress");
-    // console.log("Selecionadooooooo:::::");
-    // console.log(address);
     return address;
-
-    // console.log(JSON.stringify(user));
-
-    // if (JSON.stringify(user)) {
-    // }
-    // const token = await SecureStore.getItemAsync(TOKEN_KEY);
-    // const addresses = user
-    // const selectedAddress = JSON.stringify(
-    //   await SecureStore.getItemAsync("selectedAddress")
-    // );
-
-    // if (!selectedAddress) {
-    //   console.log("Sem endereço");
-    //   return null;
-    // }
-
-    // return selectedAddress;
-
-    // const userInfos = await SecureStore.getItemAsync("userInfos");
-    // // console.log("Infos User:::::::");
-    // // console.log(userInfos);
-
-    // return userInfos;
-    // console.log(user);
-    // const result = await axios.post(API_URL + "/address/user/", user);
   };
 
   const getCurrentLocation = async () => {
@@ -202,10 +179,7 @@ export const AuthLoggedProvider = ({ children }: any) => {
 
   const unsetMainAddress = async () => {
     try {
-      // console.log(user);
-
       const userId = await SecureStore.getItemAsync("userId");
-      // console.log(userId);
 
       if (userId) {
         const result = await axios.put(
@@ -215,13 +189,30 @@ export const AuthLoggedProvider = ({ children }: any) => {
         if (result?.data.success) {
           return result?.data.success;
         }
-        console.log(result?.data);
+        // console.log(result?.data);
         return null;
       }
 
       return null;
     } catch (error) {
       return { error: true, msg: (error as any).response.data.message };
+    }
+  };
+
+  const getAddressesByUserId = async () => {
+    const userId = await SecureStore.getItemAsync("userId");
+
+    if (userId) {
+      const result = await axios.get(API_URL + "/address/user/" + userId);
+      // console.log(result);
+
+      if (result?.data.success) {
+        // console.log("Sucessoooo!!");
+        // console.log(result?.data.address);
+        return result?.data.address;
+      }
+      // console.log(result?.data);
+      return null;
     }
   };
 
@@ -234,6 +225,7 @@ export const AuthLoggedProvider = ({ children }: any) => {
     onGetCurrentLocation: getCurrentLocation,
     onSaveAddress: saveAddress,
     onUnsetMainAddress: unsetMainAddress,
+    onGetAddressesByUserId: getAddressesByUserId,
     authState,
   };
   return (

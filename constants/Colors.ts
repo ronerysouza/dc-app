@@ -25,4 +25,5 @@ export default {
   white: "#ffffff",
   blue: "#3E8AFF",
   red: "#E32636",
+  warning: "#fdbc38",
 };

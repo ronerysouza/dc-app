@@ -109,7 +109,7 @@ const CustomHeader = () => {
 
   useEffect(() => {
     getSelectedAddress();
-  }, []);
+  }, [onSelectedAddress]);
 
   return (
     <>
