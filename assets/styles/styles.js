@@ -93,6 +93,20 @@ export const globalStyles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Inter_600SemiBold",
   },
+  buttonOutline: {
+    padding: 16,
+    borderColor: Colors.medium,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderRadius: 4,
+    alignContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  textButtonOutline: {
+    fontFamily: "Inter_600SemiBold",
+  },
   linkForgotPassword: {
     marginHorizontal: "auto",
     marginVertical: 16,

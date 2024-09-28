@@ -47,20 +47,22 @@ const CustomHeader = () => {
 
   const getSelectedAddress = async () => {
     setLocationOn(false);
-    const selecetedAdd = JSON.parse(await onSelectedAddress!());
+    const selecetedAdd = await onSelectedAddress!();
 
     if (!selecetedAdd) {
+      // alert("Caiu aqui");
       const location = await onGetCurrentLocation!();
 
       if (location && location.length > 0) {
         setLocationOn(true);
+        setAddress(location[0]);
       }
-      setAddress(location[0]);
 
       return;
     }
 
-    setAddress(selecetedAdd);
+    // console.log(selecetedAdd);
+    setAddress(JSON.parse(selecetedAdd));
     return;
 
     // const addresses = data?.address;

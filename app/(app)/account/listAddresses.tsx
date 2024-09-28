@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import { globalStyles } from "@/assets/styles/styles";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
@@ -45,6 +45,10 @@ const ListAddresses = () => {
     useLoggedAuth();
   const [addresses, setAddresses] = useState<AddAddressProps[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<any>(null);
+  const [modalAction, setModalAction] = useState<any>(null);
+
+  const [temporarySelectedAddress, setTemporarySelectedAddress] =
+    useState<any>(null);
 
   const [loading, setLoading] = useState<any>(null);
   const [permission, setPermission] = useState<any>(null);
@@ -54,23 +58,46 @@ const ListAddresses = () => {
   const [errorMsg, setErrorMsg] = useState<any>(null);
   const [mapRegion, setMapRegion] = useState({});
 
+  const actionsModalAddress = (address?: object) => {
+    // console.log(address);
+    if (address) {
+      setModalAction(true);
+      setTemporarySelectedAddress(address);
+    }
+    // getSelectedAddress();
+    // router.dismissAll();
+    // bottomSheetRef.current?.present();
+  };
+
+  const closeModal = (address: object, action?: string) => {
+    if (!action) {
+      setModalAction(null);
+      return;
+    }
+    if (address && action === "selectAddress") {
+      selectAddress(temporarySelectedAddress);
+      setModalAction(null);
+      return;
+    }
+    if (address && action === "removeAddress") {
+      alert("Remover?");
+      // selectAddress(address);
+      // setModalAction(null);
+      return;
+    }
+    if (address && action === "setMainAddress") {
+      alert("Setar como  principal?");
+      // selectAddress(address);
+      // setModalAction(null);
+      return;
+    }
+  };
+
   const selectAddress = async (address: object) => {
     await onChangeAddress!(address);
     router.back();
-    // router.replace("/home");
+    router.replace("/home");
   };
-
-  // const addNewAddress = async () => {
-  //   const locationAlowed = await checkLocationPermission();
-  //   setPermission(locationAlowed);
-  //   // console.log(locationAlowed);
-  //   if (permission || locationAlowed) {
-  //     setComponent("addAddress");
-  //     return;
-  //   }
-  //   setComponent("addAddressByZipCode");
-  //   return;
-  // };
 
   const checkLocationPermission = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -106,6 +133,7 @@ const ListAddresses = () => {
   };
 
   useEffect(() => {
+    // router.setParams({ name: undefined });
     // (async () => {
     //   let { status } = await Location.requestForegroundPermissionsAsync();
     //   if (status !== "granted") {
@@ -140,8 +168,7 @@ const ListAddresses = () => {
       setAddresses(addresses);
 
       const selected = JSON.parse(await onSelectedAddress!());
-      // console.log(selected?._id);
-      if (selected?._id) {
+      if (selected) {
         setLoading(true);
       }
       setSelectedAddress(selected);
@@ -180,7 +207,7 @@ const ListAddresses = () => {
                     ? [styles.boxAddress, styles.boxAddressSelected]
                     : [styles.boxAddress]
                 }
-                onPress={() => selectAddress(address)}
+                onPress={() => actionsModalAddress(address)}
                 key={index}
               >
                 {selectedAddress?.coords.latitude ===
@@ -279,11 +306,157 @@ const ListAddresses = () => {
           <Text>Inserir endereço via CEP</Text>
         </View>
       )}
+
+      {modalAction ? (
+        <View style={styles.modalActions}>
+          <View style={styles.modalActionsBox}>
+            <View style={styles.modalActionsHeader}>
+              <Text
+                style={[
+                  globalStyles.textDefaultSemiBold,
+                  styles.modalActionsHeaderTitle,
+                ]}
+              >
+                O que deseja fazer?
+              </Text>
+            </View>
+            <View style={styles.modalActionsBody}>
+              <Text
+                style={[globalStyles.textDefaultSemiBold, styles.titleAddress]}
+              >
+                {temporarySelectedAddress?.title}
+              </Text>
+              <Text
+                style={[
+                  globalStyles.textDefault,
+                  styles.textAddress,
+                  globalStyles.mBottom12,
+                ]}
+              >
+                {temporarySelectedAddress?.street
+                  ? temporarySelectedAddress?.street
+                  : null}
+                {temporarySelectedAddress?.number
+                  ? ", " + temporarySelectedAddress?.number
+                  : null}
+                {temporarySelectedAddress?.neighborhood
+                  ? ", " + temporarySelectedAddress?.neighborhood
+                  : null}
+                {temporarySelectedAddress?.city
+                  ? ", " + temporarySelectedAddress?.city
+                  : null}
+                {temporarySelectedAddress?.state
+                  ? ", " + temporarySelectedAddress?.state
+                  : null}
+                {temporarySelectedAddress?.zipCode
+                  ? " - CEP: " + temporarySelectedAddress?.zipCode
+                  : null}
+              </Text>
+              <TouchableOpacity
+                style={globalStyles.buttonOutline}
+                onPress={() => closeModal(modalAction, "selectAddress")}
+              >
+                <Text style={globalStyles.textButtonOutline}>
+                  Selecionar para entrega
+                </Text>
+                <Ionicons
+                  name="chevron-forward-outline"
+                  size={24}
+                  color={Colors.medium}
+                />
+              </TouchableOpacity>
+              {!temporarySelectedAddress?.mainAddress ? (
+                <TouchableOpacity
+                  style={globalStyles.buttonOutline}
+                  onPress={() => closeModal(modalAction, "setMainAddress")}
+                >
+                  <Text style={globalStyles.textButtonOutline}>
+                    Selecionar e Salvar como endereço principal;
+                  </Text>
+                  <Ionicons
+                    name="chevron-forward-outline"
+                    size={24}
+                    color={Colors.medium}
+                  />
+                </TouchableOpacity>
+              ) : null}
+              {!temporarySelectedAddress?.mainAddress ? (
+                <TouchableOpacity
+                  style={globalStyles.buttonOutline}
+                  onPress={() => closeModal(modalAction, "setMainAddress")}
+                >
+                  <Text style={globalStyles.textButtonOutline}>Excluir</Text>
+                  <Ionicons
+                    name="close-outline"
+                    size={24}
+                    color={Colors.medium}
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </View>
+            <View style={styles.modalActionsFooter}>
+              <TouchableOpacity
+                style={globalStyles.buttonOutline}
+                onPress={() => closeModal(modalAction)}
+              >
+                <Text style={globalStyles.textButtonOutline}>Cancelar</Text>
+                <Ionicons
+                  name="close-outline"
+                  size={24}
+                  color={Colors.medium}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      ) : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  modalActions: {
+    position: "absolute",
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "flex-start",
+    alignContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: Colors.medium,
+  },
+  modalActionsBox: {
+    top: 24,
+    backgroundColor: Colors.white,
+    width: "90%",
+    display: "flex",
+    borderRadius: 8,
+    gap: 8,
+  },
+  modalActionsHeader: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    backgroundColor: Colors.green,
+    padding: 12,
+  },
+  modalActionsHeaderTitle: {
+    color: Colors.white,
+    fontSize: 16,
+    textAlign: "center",
+  },
+  modalActionsBody: {
+    padding: 12,
+    display: "flex",
+    gap: 12,
+  },
+  modalActionsFooter: {
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    padding: 12,
+    alignItems: "center",
+  },
   boxNoOrder: {
     flex: 1,
     padding: 12,

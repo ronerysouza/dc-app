@@ -130,10 +130,57 @@ export const AuthLoggedProvider = ({ children }: any) => {
 
   const selectedAddress = async () => {
     const address = await SecureStore.getItemAsync("selectedAddress");
+    // console.log(address);
+
+    if (!address) {
+      const addresses = await getAddressesByUserId();
+
+      if (addresses) {
+        const mainAddress = addresses.filter(
+          (add: { mainAddress: boolean }) => {
+            return add.mainAddress;
+          }
+        );
+        return mainAddress[0];
+      }
+
+      // console.log(mainAddress[0]);
+
+      // const newAddress = {
+      //   title: mainAddress[0]?.street,
+      //   zipCode: mainAddress[0]?.postalCode,
+      //   street: mainAddress[0]?.street,
+      //   number: mainAddress[0]?.number,
+      //   neighborhood: mainAddress[0]?.district,
+      //   city: mainAddress[0]?.city,
+      //   state: mainAddress[0]?.region,
+      //   coords: {
+      //     latitude: mainAddress[0].coords.latitude,
+      //     latitudeDelta: 0.0001,
+      //     longitude: mainAddress[0].coords.longitude,
+      //     longitudeDelta: 0.0009,
+      //   },
+      //   mainAddress: mainAddress[0].mainAddress,
+      // };
+
+      // await SecureStore.deleteItemAsync("selectedAddress");
+      // await SecureStore.setItemAsync(
+      //   "selectedAddress",
+      //   JSON.stringify(newAddress)
+      // );
+
+      // console.log(mainAddress[0]);
+      // changeAddress(mainAddress[0]);
+    }
+
     return address;
   };
 
   const getCurrentLocation = async () => {
+    const token = await SecureStore.getItemAsync(TOKEN_KEY);
+
+    if (!token) return null;
+
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       setErrorMsg("Permissão de localização negada!");
@@ -200,6 +247,23 @@ export const AuthLoggedProvider = ({ children }: any) => {
   };
 
   const getAddressesByUserId = async () => {
+    const userId = await SecureStore.getItemAsync("userId");
+
+    if (userId) {
+      const result = await axios.get(API_URL + "/address/user/" + userId);
+      // console.log(result);
+
+      if (result?.data.success) {
+        // console.log("Sucessoooo!!");
+        // console.log(result?.data.address);
+        return result?.data.address;
+      }
+      // console.log(result?.data);
+      return null;
+    }
+  };
+
+  const getMainAddress = async () => {
     const userId = await SecureStore.getItemAsync("userId");
 
     if (userId) {

@@ -12,6 +12,10 @@ const AddAdress = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
+  const [draggableMarker, setDraggableMarker] = useState({
+    latitude: 148.11,
+    longitude: -26.85,
+  });
   const [address, setAddress] = useState<any>(null);
 
   const [mapRegion, setMapRegion] = useState<any>(null);
@@ -35,45 +39,46 @@ const AddAdress = () => {
     };
 
     const resultAddress = await onSaveAddress!(newAddress);
-    // console.log("UUUUUUUUUU");
-    // console.log(resultAddress);
     if (resultAddress) {
       router.back();
-      // router.replace("/home");
+      router.replace("/home");
+    }
+  };
+
+  const changeAddressOnMap = async (cordinates?: any) => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permissão de localização negada!");
+      return;
+    }
+
+    const { coords } = await Location.getCurrentPositionAsync();
+
+    if (coords) {
+      const { latitude, longitude } = cordinates ? cordinates : coords;
+      setDraggableMarker(coords);
+      setLatitude(latitude);
+      setLongitude(longitude);
+
+      let response = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+
+      let objLocatioin = {
+        latitude: latitude,
+        longitude: longitude,
+        latitudeDelta: 0.0001,
+        longitudeDelta: 0.0009,
+      };
+
+      setAddress(response[0]);
+      setMapRegion(objLocatioin);
     }
   };
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permissão de localização negada!");
-        return;
-      }
-
-      let { coords } = await Location.getCurrentPositionAsync();
-
-      if (coords) {
-        const { latitude, longitude } = coords;
-        setLatitude(latitude);
-        setLongitude(longitude);
-
-        let response = await Location.reverseGeocodeAsync({
-          latitude,
-          longitude,
-        });
-
-        let objLocatioin = {
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.0001,
-          longitudeDelta: 0.0009,
-        };
-
-        setAddress(response[0]);
-        setMapRegion(objLocatioin);
-      }
-    })();
+    changeAddressOnMap();
   }, []);
 
   return (
@@ -103,8 +108,18 @@ const AddAdress = () => {
         </TouchableOpacity>
       </View>
 
-      <MapView style={{ flex: 1 }} region={mapRegion}>
-        <Marker coordinate={mapRegion} title="Delivery Chapada" />
+      <MapView
+        style={{ flex: 1 }}
+        region={mapRegion}
+        showsUserLocation={true}
+        // followsUserLocation={true}
+      >
+        <Marker
+          draggable
+          coordinate={mapRegion}
+          title="Clique, segure e arraste para alterar o seu local no mapa."
+          onDragEnd={(e) => changeAddressOnMap(e.nativeEvent.coordinate)}
+        />
       </MapView>
     </View>
   );

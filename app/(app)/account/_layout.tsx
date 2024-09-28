@@ -1,8 +1,18 @@
 import Colors from "@/constants/Colors";
-import { Stack } from "expo-router";
+import {
+  Stack,
+  useGlobalSearchParams,
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Layout() {
+  // const router = useRouter();
+  // const params = useLocalSearchParams();
+
+  // // console.log(params.name);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack
@@ -17,6 +27,7 @@ export default function Layout() {
         <Stack.Screen
           name="index"
           options={{ title: "Minha conta", headerShown: false }}
+          // initialParams={{ name: undefined }}
         />
         <Stack.Screen
           name="listAddresses"
@@ -24,6 +35,7 @@ export default function Layout() {
             presentation: "modal",
             title: "Meus endereços",
           }}
+          // initialParams={{ name: undefined }}
         />
         <Stack.Screen
           name="addAddress"

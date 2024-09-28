@@ -6,12 +6,15 @@ import {
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import Colors from "@/constants/Colors";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { globalStyles } from "@/assets/styles/styles";
+import { useNavigation } from "@react-navigation/native";
 
 export type Ref = BottomSheetModal;
 
 const BottomSheet = forwardRef<Ref>((props, ref) => {
+  const navigation = useNavigation();
   const snapPoints = useMemo(() => ["50%"], []);
   const renderBackdrop = useCallback(
     (props: any) => (
@@ -24,6 +27,7 @@ const BottomSheet = forwardRef<Ref>((props, ref) => {
     []
   );
   const { dismiss } = useBottomSheetModal();
+
   return (
     <BottomSheetModal
       handleIndicatorStyle={{ display: "none" }}
@@ -34,7 +38,16 @@ const BottomSheet = forwardRef<Ref>((props, ref) => {
       style={styles.bottomModal}
     >
       <View style={styles.contentModal}>
-        <View style={styles.toogle}>
+        <Text
+          style={[
+            globalStyles.titleSection,
+            globalStyles.textCenter,
+            globalStyles.mBottom12,
+          ]}
+        >
+          Como deseja receber seu pedido?
+        </Text>
+        <View style={[styles.toogle, globalStyles.mBottom12]}>
           <TouchableOpacity style={styles.toogleActive}>
             <Text style={styles.toogleTextActive}>Delivery</Text>
           </TouchableOpacity>
@@ -44,20 +57,38 @@ const BottomSheet = forwardRef<Ref>((props, ref) => {
         </View>
 
         <View style={styles.boxListAddress}>
-          <Text style={styles.titleH2}>Meus endereços:</Text>
+          {/* <Text style={styles.titleH2}>Meus endereços:</Text>
 
           <View style={styles.notFound}>
             <Ionicons name="sad-outline" size={48} color={Colors.medium} />
             <Text style={styles.notFoundText}>Nenhum endereço cadastrado</Text>
-          </View>
+          </View> */}
 
-          <Link href={"/(app)/account/listAddresses"} asChild>
+          <Link
+            href={{
+              pathname: "/(app)/account",
+              params: { name: "listAddresses" },
+            }}
+            asChild
+          >
             <TouchableOpacity
               style={styles.buttonAddNewAddress}
-              onPress={() => dismiss()}
+              onPress={() => {
+                dismiss();
+                // router.replace({
+                //   pathname: "/(app)/account",
+                //   params: { name: "listAddresses" },
+                // });
+                // navigation.navigate('Details', {
+                //   itemId: 86,
+                //   otherParam: 'anything you want here',
+                // });
+                // router.setParams({ screen: "addAdrress" });
+                // router.push("/(app)/account");
+              }}
             >
               <Text style={styles.textButtonAddNewAddress}>
-                Adicionar novo endereço
+                Trocar endereço
               </Text>
               <Ionicons
                 name="add-circle-outline"
