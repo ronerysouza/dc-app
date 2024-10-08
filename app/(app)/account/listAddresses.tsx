@@ -167,11 +167,16 @@ const ListAddresses = () => {
       const addresses = await onGetAddressesByUserId!();
       setAddresses(addresses);
 
-      const selected = JSON.parse(await onSelectedAddress!());
+      let selected = await onSelectedAddress!();
       if (selected) {
         setLoading(true);
       }
-      setSelectedAddress(selected);
+
+      try {
+        setSelectedAddress(JSON.parse(selected));
+      } catch (error) {
+        setSelectedAddress(selected);
+      }
     };
 
     loadAddresses();

@@ -50,7 +50,6 @@ const CustomHeader = () => {
     const selecetedAdd = await onSelectedAddress!();
 
     if (!selecetedAdd) {
-      // alert("Caiu aqui");
       const location = await onGetCurrentLocation!();
 
       if (location && location.length > 0) {
@@ -61,47 +60,13 @@ const CustomHeader = () => {
       return;
     }
 
-    // console.log(selecetedAdd);
-    setAddress(JSON.parse(selecetedAdd));
+    try {
+      setAddress(JSON.parse(selecetedAdd));
+      return;
+    } catch (error) {
+      setAddress(selecetedAdd);
+    }
     return;
-
-    // const addresses = data?.address;
-
-    // // const mainAddress = addresses.filter((person) => person.name !== "John");
-
-    // if (addresses.length <= 0) {
-    //   console.log("Nenhum endereço selecionado.");
-
-    //   const location = await onGetCurrentLocation!();
-
-    //   if (location && location.length > 0) {
-    //     setLocationOn(true);
-    //   }
-    //   // console.log(location);
-    //   setAddress(location[0]);
-
-    //   return;
-    // }
-
-    // if (addresses.length === 1) {
-    //   setAddress(addresses[0]);
-    //   return;
-    // }
-
-    // if (addresses.length > 1) {
-    //   for (let i = 0; i < addresses.length; i++) {
-    //     return;
-    //     console.log(addresses[i]);
-    //   }
-    //   setAddress(addresses[0]);
-    //   return;
-    // }
-
-    // const selectedAddress
-
-    // setAddress(user.address[0]);
-    // console.log("Opppppaaaa");
-    // console.log(selectedAddress);
   };
 
   const openModal = () => {
